@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<title>BRICKFIRE</title>
+<style>
+html,body{margin:0;height:100%;background:#120c08;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none;font-family:ui-monospace,Menlo,monospace;color:#ffd27a}
+#wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#unity-canvas{width:100%;height:100%;max-width:calc(100vh*9/16);background:#120c08;display:block}
+#boot{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:radial-gradient(#3a2210,#120c08)}
+#boot h1{font-size:44px;letter-spacing:4px;margin:0;color:#ff8a2a;text-shadow:4px 4px 0 #6a1d00}
+#bar{width:220px;height:14px;border:3px solid #ffd27a;display:none}#fill{height:100%;width:0;background:#ff8a2a}
+#go{font:inherit;font-size:22px;padding:14px 26px;background:#ff8a2a;color:#120c08;border:4px solid #ffd27a;box-shadow:4px 4px 0 #6a1d00}
+.dim{opacity:.7;font-size:13px}
+</style></head><body>
+<div id="wrap"><canvas id="unity-canvas" tabindex="-1"></canvas></div>
+<div id="boot"><h1>BRICKFIRE</h1><p class="dim">1v1 tank duel · portrait</p><button id="go" type="button">TAP TO PLAY</button><div id="bar"><div id="fill"></div></div></div>
+<script>
+var go=document.querySelector("#go"),bar=document.querySelector("#bar"),fill=document.querySelector("#fill");
+var buildUrl="Build";
+var config={dataUrl:buildUrl+"/WebGL.data.unityweb",frameworkUrl:buildUrl+"/WebGL.framework.js.unityweb",codeUrl:buildUrl+"/WebGL.wasm.unityweb",
+streamingAssetsUrl:"StreamingAssets",companyName:"GiantHologist",productName:"BRICKFIRE",productVersion:"0.1.0",
+devicePixelRatio:Math.min(window.devicePixelRatio||1,2)};
+function start(){go.style.display="none";bar.style.display="block";
+ var s=document.createElement("script");s.src=buildUrl+"/WebGL.loader.js";
+ s.onload=function(){createUnityInstance(document.querySelector("#unity-canvas"),config,function(p){fill.style.width=(100*p)+"%";})
+ .then(function(inst){window.bfUnity=inst;document.querySelector("#boot").style.display="none";})
+ .catch(function(e){document.querySelector("#boot").innerHTML="<p>"+e+"</p>";});};
+ document.body.appendChild(s);}
+go.addEventListener("click",start);
+</script></body></html>
